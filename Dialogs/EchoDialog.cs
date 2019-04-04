@@ -16,8 +16,10 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
         protected int count = 1;
         protected double Tlat { get; set; }
         protected double Tlng { get; set; }
-
-
+        protected double Slat { get; set; }
+        protected double Slng { get; set; }
+             
+       
         protected int KM { get; set; }
         protected string msg { get; set; }
         public async Task StartAsync(IDialogContext context)
@@ -27,28 +29,31 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
 
         public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> argument)
         {
-            var message = await argument;
+           
 
             try
             {
+                 var message = await argument;
                 await context.PostAsync("Hello, What is your name?");
                 SpeechSynthesizer sound = new SpeechSynthesizer();  //Add System.Speech Reference First In Order To Creating It.
                 sound.Speak("Hello, What is your name?"); //Set Reader To Response Output of AIML To Speak
                 context.Wait(StartMsg);
             }
 
-            catch (Exception )
+            catch (Exception)
 
             {
-                await context.PostAsync("Sorry you make a mistake\n Try again!!");
+
+                await context.PostAsync("Sorry you make a mistake\n Please try again!!");
+                context.Wait(MessageReceivedAsync);
             }
-        }
+}
 
         public async Task StartMsg(IDialogContext context, IAwaitable<IMessageActivity> argument)
         {
             var message = await argument;
 
-            await context.PostAsync("Welcome to Cyprus Guidance Bot " + message.Text + "!!! \n What are you interested to learn about? \n -->My Location \n--> Distances \n-->Nearest-places \n-->Cheapest-places \n-->Informations about places ");
+            await context.PostAsync("Welcome to Cyprus Guidance Bot " + message.Text + "!!! \n What are you interested to learn about? \n * My Location \n * Distances \n * Nearest places \n * Cheapest places \n * Information about places ");
             SpeechSynthesizer sound = new SpeechSynthesizer(); //Add System.Speech Reference First In Order To Creating It.
             sound.Speak("Welcome to Cyprus Guidance Bot " + message.Text + " What are you interested to learn about?"); //Set Reader To Response Output of AIML To Speak
             context.Wait(ChooseMsg);
@@ -56,9 +61,10 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
         }
         public async Task redirect(IDialogContext context, IAwaitable<IMessageActivity> argument)
         {
-
-            await context.PostAsync(" What are you interested to learn about? \n-->My Location \n--> Distances \n-->Nearest-places \n-->Cheapest-places \n-->Informations about places  ");
-
+            var message = await argument;
+            await context.PostAsync(" What are you interested to learn about? \n* My Location \n* Distances \n* Nearest places \n* Cheapest places \n* information about places  ");
+            SpeechSynthesizer sound = new SpeechSynthesizer(); //Add System.Speech Reference First In Order To Creating It.
+            sound.Speak("What are you interested to learn about?");
             context.Wait(ChooseMsg);
 
         }
@@ -83,26 +89,29 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
             else if (answer == "museums")
             {
                 await context.PostAsync("Give your Latitude:");
-
+                SpeechSynthesizer sound = new SpeechSynthesizer(); //Add System.Speech Reference First In Order To Creating It.
+                sound.Speak("Give your Latitude:");
                 context.Wait(DistanceMuseumsLat);
 
             }
             else if (answer == "restaurants")
             {
                 await context.PostAsync("Give your Latitude:");
-
+                SpeechSynthesizer sound = new SpeechSynthesizer(); //Add System.Speech Reference First In Order To Creating It.
+                sound.Speak("Give your Latitude:");
                 context.Wait(DistanceRestaurantsLat);
 
             }
             else if (answer == "bars")
             {
-                await context.PostAsync("Give your latitude:");
-
+                await context.PostAsync("Do you like to use your latitude?");
+                SpeechSynthesizer sound = new SpeechSynthesizer(); //Add System.Speech Reference First In Order To Creating It.
+                sound.Speak("Give your Latitude:");
                 context.Wait(DistanceBarsLat);
 
             }
 
-            else if (answer == "nearest-places")
+            else if (answer == "nearest places")
             {
 
                 await context.PostAsync("what places do you want? " +
@@ -112,22 +121,25 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
             else if (answer == "nearest-museums")
             {
                 await context.PostAsync("Give your Latitude:");
-
+                SpeechSynthesizer sound = new SpeechSynthesizer(); //Add System.Speech Reference First In Order To Creating It.
+                sound.Speak("Give your Latitude:");
                 context.Wait(NearestMuseumsLat);
             }
             else if (answer == "nearest-restaurants")
             {
                 await context.PostAsync("Give your Latitude:");
-
+                SpeechSynthesizer sound = new SpeechSynthesizer(); //Add System.Speech Reference First In Order To Creating It.
+                sound.Speak("Give your Latitude:");
                 context.Wait(NearestRestaurantLat);
             }
             else if (answer == "nearest-bars")
             {
                 await context.PostAsync("Give your Latitude:");
-
+                SpeechSynthesizer sound = new SpeechSynthesizer(); //Add System.Speech Reference First In Order To Creating It.
+                sound.Speak("Give your Latitude:");
                 context.Wait(NearestBarsLat);
             }
-            else if (answer == "cheapest-places")
+            else if (answer == "cheapest places")
             {
                 await context.PostAsync("What places do you want to know for?" +
                     "\n -Cheapest-Restaurants \n -Cheapest-Bars");
@@ -151,15 +163,14 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
             {
                 await context.PostAsync("what places information do you want for? " +
                    "\n -Museums-Info \n -Restaurants-Info \n -Bars-Info");
-                //SpeechSynthesizer sound = new SpeechSynthesizer(); //Add System.Speech Reference First In Order To Creating It.
-                //sound.Speak("what places information do you want for? " +
-                //   "\n Museums-Info \n Restaurants-Info \n Bars-Info");
+                SpeechSynthesizer sound = new SpeechSynthesizer(); //Add System.Speech Reference First In Order To Creating It.
+                sound.Speak("what places information do you want for?");
             }
             else if (answer == "museums-info")
             {
                 await context.PostAsync("Please provide a district:");
-                //SpeechSynthesizer sound = new SpeechSynthesizer(); //Add System.Speech Reference First In Order To Creating It.
-                //sound.Speak("Please provide a city:");
+                SpeechSynthesizer sound = new SpeechSynthesizer(); //Add System.Speech Reference First In Order To Creating It.
+                sound.Speak("Please provide a district:");
                 context.Wait(MuseumsInfo);
 
             }
@@ -175,7 +186,7 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
             {
                 await context.PostAsync("Please provide a district:");
                 SpeechSynthesizer sound = new SpeechSynthesizer(); //Add System.Speech Reference First In Order To Creating It.
-                sound.Speak("Please provide a city:");
+                sound.Speak("Please provide a district:");
                 context.Wait(BarsInfo);
 
             }
@@ -209,6 +220,8 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
             {
                 Tlat = Convert.ToDouble(message.Text);
                 await context.PostAsync("Give your longitude:");
+                SpeechSynthesizer sound = new SpeechSynthesizer(); //Add System.Speech Reference First In Order To Creating It.
+                sound.Speak("Give your Longitude:");
                 context.Wait(DistanceMuseumsLng);
             }
 
@@ -224,7 +237,8 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
             var message = await answer;
             Tlng = Convert.ToDouble(message.Text);
             await context.PostAsync("Give the maximum range from you:");
-
+            SpeechSynthesizer sound = new SpeechSynthesizer(); //Add System.Speech Reference First In Order To Creating It.
+            sound.Speak("Give the maximum range from you");
             context.Wait(DistanceMuseumsMiles);
         }
         public async Task DistanceMuseumsMiles(IDialogContext context, IAwaitable<IMessageActivity> answer)
@@ -246,10 +260,12 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
             {
                 Tlat = Convert.ToDouble(message.Text);
                 await context.PostAsync("Give your longitude:");
+                SpeechSynthesizer sound = new SpeechSynthesizer(); //Add System.Speech Reference First In Order To Creating It.
+                sound.Speak("Give your longitude:");
                 context.Wait(DistanceRestaurantsLng);
             }
-#pragma warning disable CS0168 // The variable 'e' is declared but never used
-            catch (Exception e)
+
+            catch (Exception)
 #pragma warning restore CS0168 // The variable 'e' is declared but never used
             {
                 await context.PostAsync("Please enter your coordinates!! \n Do you like to learn them?");
@@ -261,6 +277,8 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
             var message = await answer;
             Tlng = Convert.ToDouble(message.Text);
             await context.PostAsync("Give the maximum range from you:");
+            SpeechSynthesizer sound = new SpeechSynthesizer(); //Add System.Speech Reference First In Order To Creating It.
+            sound.Speak("Give the maximum range from you");
             context.Wait(DistanceRestaurantsKilometers);
         }
         public async Task DistanceRestaurantsKilometers(IDialogContext context, IAwaitable<IMessageActivity> answer)
@@ -280,25 +298,35 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
             var message = await answer;
             try
             {
+                if (message.Text == "yes")
+                {
 
-                Tlat = Convert.ToDouble(message.Text);
-                await context.PostAsync("Give your longitude:");
+                    Tlat = Convert.ToDouble(Slat.ToString());
 
-                context.Wait(DistanceBarsLng);
+                    await context.PostAsync("Do you like to use your longitude that i found before?");
+
+                    context.Wait(DistanceBarsLng);
+                }
+                else
+                {
+                    await context.PostAsync("Sorry you make mistake\n Do you like to learn them?");
+                }
             }
-#pragma warning disable CS0168 // The variable 'e' is declared but never used
+
             catch (Exception e)
-#pragma warning restore CS0168 // The variable 'e' is declared but never used
+
             {
                 await context.PostAsync("Please enter your coordinates!!\n Do you like to learn them? ");
-                context.Wait(redirect);
+                context.Wait(LocationsCoordinates);
             }
         }
         public async Task DistanceBarsLng(IDialogContext context, IAwaitable<IMessageActivity> answer)
         {
             var message = await answer;
-            Tlng = Convert.ToDouble(message.Text);
+            Tlng = Convert.ToDouble(Slng.ToString());
             await context.PostAsync("Give the maximum range from you:");
+            SpeechSynthesizer sound = new SpeechSynthesizer(); //Add System.Speech Reference First In Order To Creating It.
+            sound.Speak("Give the maximum range from you");
 
             context.Wait(DistanceBarsKilometers);
         }
@@ -354,18 +382,6 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
 
                 await Task.Delay(5000);
                 await context.PostAsync("Do you want to see other distances from other location?");
-
-                //if (String.IsNullOrEmpty(msg))
-                //{
-
-                //    msg = "There is NO available museums near to you";
-                //    await context.PostAsync(msg);
-                //    await Task.Delay(10000);
-                //    await context.PostAsync("Do you want to try again?");
-                //    context.Wait(redirect);
-
-                //}
-
 
             }
 
@@ -887,7 +903,7 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
                 await context.PostAsync("Have a nice day!!!");
 
             }
-            else if (message.Text == "yes")
+            else if (message.Text == "yes"||message.Text =="yeah")
             {
 
                 await context.PostAsync("Choose one of the two categories: \n--> Distances \n-->Nearest places ");
@@ -919,7 +935,9 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
 
                     String msg = "Your Latitude is: '" + reader[3] + "' \n Your Longitude is: '" + reader[4];
                     await context.PostAsync(msg);
-
+                    Slat = Convert.ToDouble(reader[3].ToString());
+                    Slng = Convert.ToDouble(reader[4].ToString());
+                
 
                     await Task.Delay(3000);
 
@@ -968,7 +986,7 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
                 if (!reader.Read())
                 {
                     await context.PostAsync("The district that you provide does not exist. \n Please try again!!");
-                    context.Wait(CheapestRestaurants);
+                    context.Wait(CheapestBars);
                 }
                 else
                 {

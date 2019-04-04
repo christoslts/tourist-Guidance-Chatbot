@@ -51,9 +51,6 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
 
             }
 
-
-
-
             return null;
 
 
@@ -71,11 +68,11 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
             {
                 check_answer = words_array[a].ToString().ToLower();
 
-                if (Distance(check_answer, "nearest-places") <= 2 || Distance(check_answer, "nerest-places") <= 1 ||
-                    Distance(check_answer, "nearestplaces") <= 1)
+                if (Distance(check_answer, "nearest places") <= 2 || Distance(check_answer, "nerest-places") <= 1 ||
+                    Distance(check_answer, "nearestplaces") <= 1 || Distance(check_answer, "nearest") <= 2)
 
                 {
-                    return "nearest-places";
+                    return "nearest places";
                 }
                 if (Distance(check_answer, "nearest-museums") <= 2 || Distance(check_answer, "nerest-musems") <= 2 || Distance(check_answer, "nearestmusums") <= 2
                     || Distance(check_answer, "nearestmuseums") <= 1)
@@ -114,11 +111,11 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
 
                     return "bars-info";
                 }
-                if (Distance(check_answer, "cheapest-places") <= 2 || Distance(check_answer, "cheapestplaces") <= 1 || Distance(check_answer, "chepest-places") <= 1
+                if (Distance(check_answer, "cheapest places") <= 2 || Distance(check_answer, "cheapestplaces") <= 1 || Distance(check_answer, "chepest-places") <= 1
                     || Distance(check_answer, "cheapstplaces") <= 2 || Distance(check_answer, "cheapest") <= 2)
                 {
 
-                    return "cheapest-places";
+                    return "cheapest places";
                 }
                 if (Distance(check_answer, "cheapest-bars") <= 2 || Distance(check_answer, "cheapestbars") <= 1 || Distance(check_answer, "chepest-bars") <= 1
                     || Distance(check_answer, "cheapstbars") <= 2 || Distance(check_answer, "cheapest bars") <= 1)
